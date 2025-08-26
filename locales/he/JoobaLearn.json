@@ -1,0 +1,18 @@
+{
+  "welcomeMessage": "איזה כיף לראות אותך {{name}}",
+  "todayLesson": "על מה נלמד היום?",
+  "businessManagement": "ניהול עסק ויזמות אונליין",
+  "financialEducation": "חינוך פיננסי",
+  "continue": "המשך",
+  "earnOncePerDay": "יאללה לשלב הבא",
+  "championship": "אליפות!",
+  "perfectScore": "עבודה נהדרת",
+  "successRate": "אחוז הצלחה",
+  "completionTime": "זמן השלמה",
+  "amazing": "מדהים!",
+  "wrongAnswer": "אופס... זאת לא התשובה",
+  "testPrefix": "מבחן ",
+  "videoPrefix": "סרטון ",
+  "takeTest": "ענה על המבחן",
+  "watchVideo": "צפה בסרטון"
+}

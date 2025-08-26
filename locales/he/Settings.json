@@ -1,0 +1,18 @@
+{
+  "title": "הגדרות",
+  "language": "שפה",
+  "darkMode": "מצב חשוך",
+  "darkOn": "מצב חשוך מופעל",
+  "darkOff": "מצב חשוך כבוי",
+  "profile": "פרופיל",
+  "name": "שם",
+  "phone": "טלפון",
+  "enterName": "הכנס את שמך",
+  "save": "שמור",
+  "termsPrivacy": "תנאים ופרטיות",
+  "login": "התחבר",
+  "logout": "התנתק",
+  "loggedIn": "התחברת בהצלחה",
+  "loggedOut": "התנתקת בהצלחה",
+  "profileUpdated": "הפרופיל עודכן בהצלחה"
+}

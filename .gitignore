@@ -1,0 +1,25 @@
+
+dist
+.DS_Store
+.env
+.firebase
+.expo/settings.json
+.expo/metro/
+.expo
+.vscode/settings.json
+.idea
+
+
+/android
+/ios
+# Local Netlify folder
+.netlify
+node_modules
+
+app/(app)/(shared)/private-zone/tryouts-for-dashboard.js
+
+# Don't push firebase service worker, only the template
+/public/firebase-messaging-sw.js
+config.json
+
+windsurf.rules.md

@@ -1,0 +1,18 @@
+{
+  "welcomeMessage": "How nice to see you {{name}}",
+  "todayLesson": "What will we learn today?",
+  "businessManagement": "Business",
+  "financialEducation": "Finance",
+  "continue": "Continue",
+  "earnOncePerDay": "Continue to the next level",
+  "championship": "Success!",
+  "perfectScore": "Great job",
+  "successRate": "Success rate",
+  "completionTime": "Done In",
+  "amazing": "Amazing!",
+  "wrongAnswer": "Oops... that's not the answer",
+  "testPrefix": "Test ",
+  "videoPrefix": "Video ",
+  "takeTest": "Take the test",
+  "watchVideo": "Watch video"
+}

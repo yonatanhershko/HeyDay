@@ -1,0 +1,24 @@
+{
+  "env": "dev",
+  "baseURL": "",
+  "firebaseConfig": {
+    "apiKey": "AIzaSyAJQuPMWlSDqZaH0DVkCfNFBV7jZgbgsn8",
+    "authDomain": "heyday-dev-f848e.firebaseapp.com",
+    "projectId": "heyday-dev-f848e",
+    "storageBucket": "heyday-dev-f848e.firebasestorage.app",
+    "messagingSenderId": "940594406361",
+    "appId": "1:940594406361:web:bb7286618bdd21987c2fc8",
+    "measurementId": "G-3932VVB75C"
+  },
+  "mobileWidth": 1025,
+  "languages": [
+    {
+      "code": "en",
+      "name": "English"
+    },
+    {
+      "code": "he",
+      "name": "Hebrew"
+    }
+  ]
+}
