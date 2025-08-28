@@ -4,6 +4,7 @@
   "firebaseConfig": {
     "apiKey": "AIzaSyAJQuPMWlSDqZaH0DVkCfNFBV7jZgbgsn8",
     "authDomain": "heyday-dev-f848e.firebaseapp.com",
+    "databaseURL": "https://heyday-dev-f848e-default-rtdb.europe-west1.firebasedatabase.app/",
     "projectId": "heyday-dev-f848e",
     "storageBucket": "heyday-dev-f848e.firebasestorage.app",
     "messagingSenderId": "940594406361",

@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/react": "~18.3.12",
     "eslint": "8",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-expo": "^0.0.1",
