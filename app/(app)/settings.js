@@ -27,7 +27,7 @@ export default function Settings() {
   const searchParams = useLocalSearchParams();
   const t = useTheme();
   const styles = makeStyles(t);
-  const { language, darkTheme, isLoggedIn, setLanguage, setDarkTheme, setLoggedIn } = useUserStore();
+  const { language, isLoggedIn, setLanguage, setLoggedIn } = useUserStore();
 
   // Add local state only for what's not in Zustand yet
   const [isEditing, setIsEditing] = React.useState(false);
@@ -59,9 +59,9 @@ export default function Settings() {
 
 
   // Handle theme toggle using Zustand
-  const handleThemeChange = (value) => {
-    setDarkTheme(value);
-  };
+  // const handleThemeChange = (value) => {
+  //   setDarkTheme(value);
+  // };
 
   // Handle save profile
   const handleSaveProfile = () => {

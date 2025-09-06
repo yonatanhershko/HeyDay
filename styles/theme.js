@@ -92,17 +92,18 @@ export const getTheme = (isDark = false, width, height, isMobile) => {
 export const useTheme = () => {
   // Get color scheme and user preferences
   const scheme = useColorScheme();          // 'light' | 'dark' | null
-  const { getDarkTheme, setDarkTheme } = useUserStore();
-  const userPref = getDarkTheme();          // nullable boolean
+  // const { getDarkTheme, setDarkTheme } = useUserStore();
+  // const userPref = getDarkTheme();          // nullable boolean
 
   // Get window dimensions
   const { width, height } = useWindowDimensions();
 
   // Pick the final truthy source of truth
-  const isDark = userPref ?? (scheme === 'dark');
+  // const isDark = userPref ?? (scheme === 'dark');
+  const isDark = scheme === 'dark';
 
-  // Persist user choice if they have one
-  if (userPref !== null && userPref !== isDark) setDarkTheme(isDark);
+  // // Persist user choice if they have one
+  // if (userPref !== null && userPref !== isDark) setDarkTheme(isDark);
 
   // check if mobile
   const isMobile = width < config.mobileWidth;

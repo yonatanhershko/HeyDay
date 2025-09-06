@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { ref, set } from "firebase/database";
 import { useUserStore } from "../../../contexts/store/UserStore";
-import HeyDayText from "@/components/general/low_level/Text/HeyDayText";
 import OnboardingStageOne from "../../OnboardingStages/OnboardingStageOne";
 import OnboardingStageTwo from "../../OnboardingStages/OnboardingStageTwo";
 import OnboardingStageThree from "../../OnboardingStages/OnboardingStageThree";
+import HeyDayText from "@/components/general/low_level/Text/HeyDayText";
 
 interface OnboardingData {
     name: string;
@@ -25,7 +24,7 @@ const OnboardingPage = () => {
     });
 
     // Get user store state and actions
-    const { firebaseUser, setOnboardingCompleted } = useUserStore();
+    const { newUser, setNewUser } = useUserStore();
 
     // --- Stage handlers ---
     const handleStageOneNext = (name: string) => {
@@ -49,18 +48,12 @@ const OnboardingPage = () => {
         try {
             setIsLoading(true);
 
-            if (firebaseUser) {
-
-                const data = await (finalData);
-                console.log("Onboarding saved successfully for user:", data);
-
-                // Update the user store to reflect onboarding completion
-                setOnboardingCompleted(true);
-            } else {
-                console.error("No authenticated user found - cannot save onboarding data");
-                setIsLoading(false);
-                return;
-            }
+            // Call setNewUser which will save to Firebase RTDB and update userInfo
+            await setNewUser(finalData);
+            
+            console.log("Onboarding completed and saved successfully!");
+            setIsLoading(false);
+            
         } catch (error) {
             console.error("Error saving onboarding data:", error);
             setIsLoading(false);

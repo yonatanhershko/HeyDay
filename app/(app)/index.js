@@ -1,4 +1,3 @@
-
 /* eslint-disable react-native/no-unused-styles */
 import { usePathname, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -9,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useUserStore } from '../../contexts/store/UserStore';
-import BottomNavMain from '@/components/bottomNavs/bottomNavMain';
+// import BottomNavMain from '@/components/bottomNavs/bottomNavMain';
 import OnboardingPage from '@/components/screens/heyday/OnboardingPage';
 import TestPage from './TestPage';
 import HeyDayText from '@/components/general/low_level/Text/HeyDayText';
@@ -17,7 +16,7 @@ import HeyDayText from '@/components/general/low_level/Text/HeyDayText';
 
 export default function HeydayIndex() {
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const t = useTheme();
   const styles = makeStyles(t);
   
@@ -26,35 +25,14 @@ export default function HeydayIndex() {
     User, 
     onboardingCompleted, 
     authLoading,
-    setUser,
-    setOnboardingCompleted,
-    setAuthLoading,
-    setLoggedIn
   } = useUserStore();
 
   useEffect(() => {
-    // Simulate auth state check with console logs instead of Firebase
-    console.log('🔐 Simulating auth state check...');
-    
-    // Simulate a logged in user for testing
-    const mockUser = { uid: 'mock-user-123', email: 'test@example.com' };
-    console.log('👤 Mock user logged in:', mockUser.uid);
-    
-    setUser(mockUser);
-    setLoggedIn(true);
-    
-    // Simulate checking onboarding status
-    console.log('⏳ Checking onboarding status...');
-    // For now, let's assume onboarding is not completed to test the flow
-    setOnboardingCompleted(false);
-    console.log('📝 Onboarding status: not completed');
-    
-    setAuthLoading(false);
-    console.log('✅ Auth simulation complete');
+    // Initialize auth loading state - no need to call setAuthLoading since it's already false by default
   }, []);
 
   // Show loading screen while checking auth
-  if (authLoading) {
+  if (!authLoading) {
     return (
       <SafeAreaView style={styles.container}>
         <LinearGradient

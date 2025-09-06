@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import FirebaseService from '../../api/services/FirebaseService';
 
 // Zustand store for user/session and UI preferences
 
@@ -7,6 +8,8 @@ export const useUserStore = create((set, get) => ({
   isLoggedIn: false,
   userInfo: null, // { first_name, phone_number, etc. }
   User: null, //  auth user object
+  newUserData: null, // Firebase user object for RTDB operations
+  newUser: null, // Temporary storage for new user data during onboarding
   onboardingCompleted: false, // Track if user completed onboarding
   authLoading: true, // Track if auth state is still loading
 
@@ -16,14 +19,42 @@ export const useUserStore = create((set, get) => ({
   authorizedLessons: {},
 
   // Getters (used in components)
-  getDarkTheme: () => get().darkTheme,
+  // getDarkTheme: () => get().darkTheme,
 
   // Setters
   setLanguage: (language) => set({ language }),
-  setDarkTheme: (isDark) => set({ darkTheme: isDark }),
+  // setDarkTheme: (isDark) => set({ darkTheme: isDark }),
   setLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
   setUserInfo: (userInfo) => set({ userInfo }),
   setUser: (User) => set({ User }),
+  setNewUser: async (newUserData) => {
+    const state = get();
+    
+    // Set the newUser data first
+    set({ newUser: newUserData });
+    
+    // If we have a newUserData, save to database
+    if (newUserData) {
+      try {
+        await FirebaseService.saveOnboardingData(newUserData);
+        
+        // After successful save, update userInfo and complete onboarding
+        set({ 
+          userInfo: newUserData,
+          onboardingCompleted: true,
+          isLoggedIn: true
+        });
+        
+        console.log('Onboarding data saved and user logged in successfully');
+        return true;
+      } catch (error) {
+        console.error('Failed to save onboarding data:', error);
+        throw error;
+      }
+    } else {
+      console.error('No newUserData found - cannot save to database');
+    }
+  },
   setOnboardingCompleted: (completed) => set({ onboardingCompleted: completed }),
   setAuthLoading: (loading) => set({ authLoading: loading }),
   
