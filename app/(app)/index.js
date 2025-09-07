@@ -25,14 +25,16 @@ export default function HeydayIndex() {
     User, 
     onboardingCompleted, 
     authLoading,
+    setAuthLoading,
   } = useUserStore();
 
   useEffect(() => {
-    // Initialize auth loading state - no need to call setAuthLoading since it's already false by default
+    // Initialize auth loading state to false when app starts
+    setAuthLoading(false);
   }, []);
 
   // Show loading screen while checking auth
-  if (!authLoading) {
+  if (authLoading) {
     return (
       <SafeAreaView style={styles.container}>
         <LinearGradient
@@ -51,21 +53,19 @@ export default function HeydayIndex() {
 
   // Determine which component to render
   const renderContent = () => {
+    // If onboarding is completed (from AsyncStorage), skip directly to TestPage
+    if (onboardingCompleted) {
+      console.log('🎉 Onboarding completed - showing main app');
+      return <TestPage />;
+    }
+    
     if (!User) {
       // No user logged in - show onboarding
-      console.log('👤 No user logged in - showing onboarding');
       return <OnboardingPage />;
     }
     
-    if (!onboardingCompleted) {
-      // User logged in but hasn't completed onboarding
-      console.log('⏳ User logged in but onboarding not completed');
-      return <OnboardingPage />;
-    }
-    
-    // User logged in and onboarding completed - show main app
-    console.log('🎉 User ready - showing main app');
-    return <TestPage />;
+    // User logged in but hasn't completed onboarding
+    return <OnboardingPage />;
   };
 
   return (

@@ -9,6 +9,7 @@ import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from 'expo-updates
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import i18n from '../i18n.config';
 import HeyDayText from '../components/general/low_level/Text/HeyDayText';
+import { useUserStore } from '../contexts/store/UserStore';
 
 
 function AppContent() {
@@ -33,6 +34,7 @@ export default function AppLayout() {
   });
   const pathname = usePathname();
   const [updateChecked, setUpdateChecked] = useState(false);
+  const { initializeOnboardingState } = useUserStore();
 
   useEffect(() => {
     const checkUpdate = async () => {
@@ -50,6 +52,11 @@ export default function AppLayout() {
     };
 
     checkUpdate();
+  }, []);
+
+  // Initialize onboarding state from AsyncStorage when app starts
+  useEffect(() => {
+    initializeOnboardingState();
   }, []);
 
   const [isConnected, setIsConnected] = useState(true);

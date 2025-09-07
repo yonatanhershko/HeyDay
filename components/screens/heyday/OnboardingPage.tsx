@@ -16,7 +16,6 @@ interface OnboardingData {
 
 const OnboardingPage = () => {
     const [currentStage, setCurrentStage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
     const [onboardingData, setOnboardingData] = useState<OnboardingData>({
         name: "",
         termsAccepted: false,
@@ -24,7 +23,7 @@ const OnboardingPage = () => {
     });
 
     // Get user store state and actions
-    const { newUser, setNewUser } = useUserStore();
+    const { newUser, setNewUser, authLoading } = useUserStore();
 
     // --- Stage handlers ---
     const handleStageOneNext = (name: string) => {
@@ -46,17 +45,14 @@ const OnboardingPage = () => {
         };
 
         try {
-            setIsLoading(true);
-
             // Call setNewUser which will save to Firebase RTDB and update userInfo
+            // authLoading is handled inside setNewUser
             await setNewUser(finalData);
             
             console.log("Onboarding completed and saved successfully!");
-            setIsLoading(false);
             
         } catch (error) {
             console.error("Error saving onboarding data:", error);
-            setIsLoading(false);
         }
     };
 
@@ -66,7 +62,7 @@ const OnboardingPage = () => {
         }
     };
 
-    if (isLoading) {
+    if (authLoading) {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#007AFF" />

@@ -17,6 +17,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useUserStore } from '../../contexts/store/UserStore';
 import HeyDayText from '../../components/general/low_level/Text/HeyDayText';
 import i18n, { setLocaleAsync, isRTL } from '../../i18n.config';
+import { clearAllStorage } from '../../api/services/AsyncStorageService';
 
 /**
  * Settings screen component
@@ -135,6 +136,13 @@ export default function Settings() {
                 styles.languageText,
                 language === 'he' && styles.selectedLanguageText
               ]}>עברית</HeyDayText>
+            </Pressable>
+
+            <Pressable
+              style={styles.languageOption}
+              onPress={clearAllStorage}
+            >
+              <HeyDayText style={styles.languageText}>Clear Storage</HeyDayText>
             </Pressable>
           </View>
         </View>

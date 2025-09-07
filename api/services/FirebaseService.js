@@ -3,24 +3,38 @@ import { ref, set, get, update } from 'firebase/database';
 
 class FirebaseService {
   /**
+   * @returns {string} - 11-character alphanumeric user ID
+   */
+  generateUserId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 11; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
+  /**
    * Save user onboarding data to Firebase Realtime Database
    * @param {Object} onboardingData - The onboarding data to save
-   * @returns {Promise<boolean>} - Success status
+   * @returns {Promise<Object>} - Success status and user data with ID
    */
   async saveOnboardingData(onboardingData) {
     try {
-      const userRef = ref(database, `users/${onboardingData.name}`);
+      const userId = this.generateUserId();
+      const userRef = ref(database, `users/${userId}`);
       
-      // Prepare the data to save
+      // Prepare the data to save with user ID
       const userData = {
         ...onboardingData,
+        userId,
         updatedAt: new Date().toISOString(),
         onboardingCompleted: true
       };
 
       await set(userRef, userData);
-      console.log('Onboarding data saved successfully to Firebase RTDB');
-      return true;
+      console.log('Onboarding data saved successfully to Firebase RTDB with ID:', userId);
+      return { success: true, userData };
     } catch (error) {
       console.error('Error saving onboarding data to Firebase:', error);
       throw error;
