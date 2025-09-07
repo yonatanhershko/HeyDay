@@ -1,14 +1,8 @@
-// firebaseApp.
-import { initializeApp } from 'firebase/app';
-import {
-  getAuth,
-  initializeAuth,
-  getReactNativePersistence,
-} from 'firebase/auth';
-import { Platform } from 'react-native';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getDatabase } from "firebase/database";
 import config from './config.json';
-import { getMessaging } from 'firebase/messaging';
+
 
 // Firebase configuration
 const firebaseConfig = {
@@ -25,31 +19,17 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Auth with conditional persistence for React Native
-const auth =
-  Platform.OS === 'web'
-    ? getAuth(app)
-    : initializeAuth(app, {
-      persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-    });
 
-
-// Initialize messaging with proper checks
-let messaging = null;
-
-if (Platform.OS === 'web' && typeof window !== 'undefined' && 'navigator' in window && 'serviceWorker' in window.navigator) {
-  try {
-    messaging = getMessaging(app);
-
-    window.navigator.serviceWorker.register('./firebase-messaging-sw.js', {
-      scope: '/',
-    }).then(registration => {
-      // eslint-disable-next-line no-console
-      console.info('Service Worker registered with scope:', registration.scope);
-    }).catch(e => console.error('error while registrating sw', e));
-  } catch (error) {
-    console.error('Error initializing messaging:', error);
-  }
+// Analytics may not work properly in Expo development mode, but will work in production
+let analytics = null;
+try {
+  analytics = getAnalytics(app);
+} catch (error) {
+  console.warn("Firebase analytics initialization failed:", error.message);
 }
 
-export { auth, messaging };
+// Initialize Realtime Database
+const database = getDatabase(app);
+
+// Export Firebase instances
+export { app, database, analytics, firebaseConfig as default };
