@@ -10,7 +10,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useUserStore } from '../../contexts/store/UserStore';
 // import BottomNavMain from '@/components/bottomNavs/bottomNavMain';
 import OnboardingPage from '@/components/screens/heyday/OnboardingPage';
-import TestPage from './TestPage';
+import MoodCheckerPage from './MoodCheckerPage';
 import HeyDayText from '@/components/general/low_level/Text/HeyDayText';
 
 
@@ -56,7 +56,7 @@ export default function HeydayIndex() {
     // If onboarding is completed (from AsyncStorage), skip directly to TestPage
     if (onboardingCompleted) {
       console.log('🎉 Onboarding completed - showing main app');
-      return <TestPage />;
+      return <MoodCheckerPage />;
     }
     
     if (!User) {

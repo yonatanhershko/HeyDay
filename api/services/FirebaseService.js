@@ -85,6 +85,40 @@ class FirebaseService {
       throw error;
     }
   }
+
+  /**
+   * Save mood entry to user's moodEntries array
+   * @param {string} userId - The user ID
+   * @param {Object} moodEntry - The mood entry to save
+   * @returns {Promise<boolean>} - Success status
+   */
+  async saveMoodEntry(userId, moodEntry) {
+    try {
+      // First get current user data
+      const userData = await this.getUserData(userId);
+      
+      if (!userData) {
+        throw new Error('User not found');
+      }
+
+      // Get existing mood entries or initialize empty array
+      const existingEntries = userData.moodEntries || [];
+      
+      // Add new mood entry
+      const updatedEntries = [...existingEntries, moodEntry];
+      
+      // Update user data with new mood entries
+      await this.updateUserData(userId, {
+        moodEntries: updatedEntries
+      });
+
+      console.log('Mood entry saved successfully to Firebase RTDB');
+      return true;
+    } catch (error) {
+      console.error('Error saving mood entry to Firebase:', error);
+      throw error;
+    }
+  }
 }
 
 export default new FirebaseService();
