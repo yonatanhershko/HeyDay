@@ -34,10 +34,6 @@ class FirebaseService {
             };
 
             await set(userRef, userData);
-            console.log(
-                "Onboarding data saved successfully to Firebase RTDB with ID:",
-                userId
-            );
             return { success: true, userData };
         } catch (error) {
             console.error("Error saving onboarding data to Firebase:", error);
@@ -82,7 +78,6 @@ class FirebaseService {
             };
 
             await update(userRef, updateData);
-            console.log("User data updated successfully in Firebase RTDB");
             return true;
         } catch (error) {
             console.error("Error updating user data in Firebase:", error);
@@ -116,11 +111,55 @@ class FirebaseService {
                 moodEntries: updatedEntries,
             });
 
-            console.log("Mood entry saved successfully to Firebase RTDB");
             return true;
         } catch (error) {
             console.error("Error saving mood entry to Firebase:", error);
             throw error;
+        }
+    }
+
+    async getUserStreak(userId) {
+        try {
+            const userRef = ref(database, `users/${userId}`);
+            const snapshot = await get(userRef);
+            
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                return {
+                    streakCount: userData.streakCount || 0,
+                    coins: userData.coins || 0,
+                    lastMoodDate: userData.lastMoodDate || null
+                };
+            }
+            
+            return { streakCount: 0, coins: 0, lastMoodDate: null };
+        } catch (err) {
+            console.error("Error getting user streak from Firebase:", err);
+            return { streakCount: 0, coins: 0, lastMoodDate: null };
+        }
+    }
+
+    async saveUserStreak(userId, streakData) {
+        try {
+            const userRef = ref(database, `users/${userId}`);
+            const snapshot = await get(userRef);
+            
+            let existingData = {};
+            if (snapshot.exists()) {
+                existingData = snapshot.val();
+            }
+            
+            // Merge streak data with existing user data
+            const updatedData = {
+                ...existingData,
+                streakCount: streakData.streakCount,
+                coins: streakData.coins,
+                lastMoodDate: streakData.lastMoodDate
+            };
+            
+            await set(userRef, updatedData);
+        } catch (err) {
+            console.error("Error saving user streak to Firebase:", err);
         }
     }
 }

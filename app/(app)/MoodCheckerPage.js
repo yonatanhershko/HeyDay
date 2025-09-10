@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-unused-styles */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     View,
@@ -13,6 +13,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "../../styles/theme.js";
 import { useUserStore } from "../../contexts/store/UserStore.js";
 import { useMoodStore } from "../../contexts/store/MoodStore.js";
+import { useStreakStore } from "../../contexts/store/StreakStore.js";
 import HeyDayText from "../../components/general/low_level/Text/HeyDayText.js";
 import MoodOption from "../../components/general/low_level/MoodOption.js";
 import i18n, { isRTL } from "../../i18n.config.js";
@@ -48,6 +49,15 @@ export default function MoodCheckerPage() {
         submitMoodEntry,
         resetForm,
     } = useMoodStore();
+    const { loadStreak, logMood } = useStreakStore();
+
+    // Load user streak data when component mounts
+    useEffect(() => {
+        if (userInfo?.userId) {
+            console.log("Loading streak for user:", userInfo.userId);
+            loadStreak(userInfo.userId);
+        }
+    }, [userInfo?.userId, loadStreak]);
 
     const handleMoodSelect = (moodId) => {
         setSelectedMood(moodId);
@@ -74,7 +84,12 @@ export default function MoodCheckerPage() {
         }
 
         try {
+            // Save mood entry
             await submitMoodEntry(userInfo.userId);
+
+            // Update streak and coins after successful mood entry
+            await logMood(userInfo.userId);
+
             Alert.alert("Success!", "Your mood has been saved.", [
                 { text: "OK", onPress: () => resetForm() },
             ]);
@@ -109,7 +124,6 @@ export default function MoodCheckerPage() {
                     <HeyDayText style={styles.title}>
                         How are you Today?
                     </HeyDayText>
-
                 </View>
 
                 <ScrollView
