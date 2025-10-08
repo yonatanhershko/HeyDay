@@ -91,7 +91,13 @@ export default function MoodCheckerPage() {
             await logMood(userInfo.userId);
 
             Alert.alert("Success!", "Your mood has been saved.", [
-                { text: "OK", onPress: () => resetForm() },
+                { 
+                    text: "OK", 
+                    onPress: () => {
+                        resetForm();
+                        router.push("/home");
+                    }
+                },
             ]);
         } catch (error) {
             Alert.alert("Error", "Failed to save mood. Please try again.");
