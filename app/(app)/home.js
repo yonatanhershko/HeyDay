@@ -10,6 +10,7 @@ import { useTheme } from "../../styles/theme.js";
 import { useStreakStore } from "../../contexts/store/StreakStore.js";
 import HeyDayText from "../../components/general/low_level/Text/HeyDayText.js";
 import HeyDayIcon from "../../components/general/low_level/HeyDayIcon.js";
+import i18n from "@/i18n.config.js";
 import BottomNavMain from "../../components/bottomNavs/bottomNavMain.tsx";
 import {
     OkeyMoodOne,
@@ -24,14 +25,39 @@ const Home = () => {
     const styles = makeStyles(t);
     const { streakCount, coins } = useStreakStore();
 
-    const motivationalQuotes = [
-        "The only way to do great work is to love what you do. - Steve Jobs",
-        "Life is what happens to you while you're busy making other plans. - John Lennon",
-        "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
-        "It is during our darkest moments that we must focus to see the light. - Aristotle",
-    ];
+    // Get daily quote that's the same for all users (random but no repeats in 12-day cycle)
+    const getDailyQuote = () => {
+        const today = new Date();
+        const dayOfYear = Math.floor(
+            (today - new Date(today.getFullYear(), 0, 0)) / 86400000
+        );
 
-    const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+        // Create a shuffled sequence of 1-12 that repeats every 12 days
+        const createShuffledSequence = (seed) => {
+            const sequence = Array.from({ length: 12 }, (_, i) => i + 1);//here change thr 12 if add more qoutes :)
+            // Simple seeded shuffle using the cycle number as seed
+            const random = (seed) => {
+                const x = Math.sin(seed) * 10000;
+                return x - Math.floor(x);
+            };
+
+            for (let i = sequence.length - 1; i > 0; i--) {
+                const j = Math.floor(random(seed + i) * (i + 1));
+                [sequence[i], sequence[j]] = [sequence[j], sequence[i]];
+            }
+            return sequence;
+        };
+
+        const cycleNumber = Math.floor(dayOfYear / 12);
+        const dayInCycle = dayOfYear % 12;
+        const shuffledSequence = createShuffledSequence(cycleNumber);
+        const quoteNumber = shuffledSequence[dayInCycle];
+
+        const quote = i18n.t(`DayQoutes.quote${quoteNumber}`);
+        return quote;
+    };
+
+    const dailyQuote = getDailyQuote();
 
     const moodData = [
         { mood: "Amazing", count: 4, emoji: AmazingMoodOne },
@@ -43,18 +69,29 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+            <ScrollView
+                style={styles.scrollView}
+                showsVerticalScrollIndicator={false}
+            >
                 {/* Daily Motivation Section */}
                 <View style={styles.motivationSection}>
-                    <HeyDayText style={styles.sectionTitle}>Daily Motivation</HeyDayText>
-                    <HeyDayText style={styles.motivationText}>{randomQuote}</HeyDayText>
+                    <HeyDayText style={styles.sectionTitle}>
+                        Daily Motivation
+                    </HeyDayText>
+                    <HeyDayText style={styles.motivationText}>
+                        {dailyQuote}
+                    </HeyDayText>
                 </View>
 
                 {/* Time Period Selector */}
                 <View style={styles.periodSelector}>
-                    <TouchableOpacity style={[styles.periodButton, styles.activePeriod]}>
+                    <TouchableOpacity
+                        style={[styles.periodButton, styles.activePeriod]}
+                    >
                         <HeyDayIcon name="history" size={32} fill="#333" />
-                        <HeyDayText style={styles.periodText}>Weekly</HeyDayText>
+                        <HeyDayText style={styles.periodText}>
+                            Weekly
+                        </HeyDayText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.periodButton}>
                         <HeyDayIcon name="profile" size={32} fill="#333" />
@@ -68,14 +105,22 @@ const Home = () => {
 
                 {/* Mood Trends Chart */}
                 <View style={styles.trendsSection}>
-                    <HeyDayText style={styles.sectionTitle}>Mood Trends</HeyDayText>
-                    
+                    <HeyDayText style={styles.sectionTitle}>
+                        Mood Trends
+                    </HeyDayText>
+
                     {/* Circular Progress Placeholder */}
                     <View style={styles.chartContainer}>
                         <View style={styles.circularChart}>
                             <View style={styles.chartCenter}>
-                                <HeyDayIcon name="cuteFlower" size={24} fill="#FFD700" />
-                                <HeyDayText style={styles.chartCenterText}>6</HeyDayText>
+                                <HeyDayIcon
+                                    name="cuteFlower"
+                                    size={24}
+                                    fill="#FFD700"
+                                />
+                                <HeyDayText style={styles.chartCenterText}>
+                                    6
+                                </HeyDayText>
                             </View>
                         </View>
                     </View>
@@ -89,10 +134,16 @@ const Home = () => {
                                     <View style={styles.moodIconContainer}>
                                         {/* <EmojiComponent width={32} height={32} /> */}
                                         <View style={styles.moodBadge}>
-                                            <HeyDayText style={styles.moodCount}>{item.count}</HeyDayText>
+                                            <HeyDayText
+                                                style={styles.moodCount}
+                                            >
+                                                {item.count}
+                                            </HeyDayText>
                                         </View>
                                     </View>
-                                    <HeyDayText style={styles.moodLabel}>{item.mood}</HeyDayText>
+                                    <HeyDayText style={styles.moodLabel}>
+                                        {item.mood}
+                                    </HeyDayText>
                                 </View>
                             );
                         })}
@@ -107,12 +158,24 @@ const Home = () => {
                 {/* Streak & Coins Display */}
                 <View style={styles.statsSection}>
                     <View style={styles.statItem}>
-                        <HeyDayIcon name="cuteFlower" size={24} fill="#FFD700" />
-                        <HeyDayText style={styles.statText}>Streak: {streakCount}</HeyDayText>
+                        <HeyDayIcon
+                            name="cuteFlower"
+                            size={24}
+                            fill="#FFD700"
+                        />
+                        <HeyDayText style={styles.statText}>
+                            Streak: {streakCount}
+                        </HeyDayText>
                     </View>
                     <View style={styles.statItem}>
-                        <HeyDayIcon name="cuteFlower" size={24} fill="#FFD700" />
-                        <HeyDayText style={styles.statText}>Coins: {coins}</HeyDayText>
+                        <HeyDayIcon
+                            name="cuteFlower"
+                            size={24}
+                            fill="#FFD700"
+                        />
+                        <HeyDayText style={styles.statText}>
+                            Coins: {coins}
+                        </HeyDayText>
                     </View>
                 </View>
             </ScrollView>
@@ -138,9 +201,6 @@ const makeStyles = (t) =>
             alignItems: "center",
             paddingTop: 20,
             paddingBottom: 20,
-        },
-        backButton: {
-            marginRight: 15,
         },
         headerTitle: {
             fontSize: t.fontSize.large,
