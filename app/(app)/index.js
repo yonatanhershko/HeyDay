@@ -10,7 +10,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useUserStore } from '../../contexts/store/UserStore';
 // import BottomNavMain from '@/components/bottomNavs/bottomNavMain';
 import OnboardingPage from '@/components/screens/heyday/OnboardingPage';
-import TestPage from './TestPage';
+import MoodCheckerPage from './MoodCheckerPage';
 import HeyDayText from '@/components/general/low_level/Text/HeyDayText';
 
 
@@ -38,8 +38,8 @@ export default function HeydayIndex() {
     return (
       <SafeAreaView style={styles.container}>
         <LinearGradient
-          colors={['#ffff', '#5852F2']}
-          start={{ x: 0.5, y: 0 }}
+        colors={['#F8FAFC', '#F8FAFC']}
+        start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
           style={StyleSheet.absoluteFill}
         />
@@ -55,8 +55,7 @@ export default function HeydayIndex() {
   const renderContent = () => {
     // If onboarding is completed (from AsyncStorage), skip directly to TestPage
     if (onboardingCompleted) {
-      console.log('🎉 Onboarding completed - showing main app');
-      return <TestPage />;
+      return <MoodCheckerPage />;
     }
     
     if (!User) {
@@ -71,7 +70,8 @@ export default function HeydayIndex() {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
-        colors={['#ffff', '#5852F2']}
+        // colors={['#ffff', '#5852F2']}
+        colors={['#F8FAFC', '#F8FAFC']}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
         style={StyleSheet.absoluteFill}
@@ -104,7 +104,7 @@ const makeStyles = t =>
       marginTop: 10,
       fontSize: 16,
       color: 'white',
-      fontWeight: '500',
+      fontFamily: t.fontFamily.rubikMedium,
     },
     contentContainer: {
       flex: 1,

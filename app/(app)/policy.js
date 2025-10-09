@@ -24,7 +24,8 @@ export default function Policy() {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
-        colors={['#746FF4', '#5852F2']}
+        // colors={['#746FF4', '#5852F2']}
+        colors={['#F8FAFC', '#F8FAFC']}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
         style={StyleSheet.absoluteFill}

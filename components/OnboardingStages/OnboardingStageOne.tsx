@@ -23,6 +23,11 @@ const OnboardingStageOne: React.FC<OnboardingStageOneProps> = ({ onNext, initial
             onNext(name.trim());
         }
     };
+    const handleTextChange = (text: string) => {
+        // Remove forbidden characters: < > [ ] = || {}
+        const cleanText = text.replace(/[<>\[\]=|{}]/g, "");
+        setName(cleanText);
+    };
 
     return (
         <KeyboardAvoidingView
@@ -41,7 +46,7 @@ const OnboardingStageOne: React.FC<OnboardingStageOneProps> = ({ onNext, initial
                     <TextInput
                         style={styles.input}
                         value={name}
-                        onChangeText={setName}
+                        onChangeText={handleTextChange}
                         placeholder="Enter your name"
                         placeholderTextColor="#999"
                         returnKeyType="done"
