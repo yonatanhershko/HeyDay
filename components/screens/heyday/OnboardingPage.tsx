@@ -5,6 +5,8 @@ import OnboardingStageOne from "../../OnboardingStages/OnboardingStageOne";
 import OnboardingStageTwo from "../../OnboardingStages/OnboardingStageTwo";
 import OnboardingStageThree from "../../OnboardingStages/OnboardingStageThree";
 import HeyDayText from "@/components/general/low_level/Text/HeyDayText";
+import { AutoImageCarousel } from "../../../components/general/high_level/AutoImageCarousel.js";
+import { useTheme } from "../../../styles/theme";
 
 interface OnboardingData {
     name: string;
@@ -21,7 +23,8 @@ const OnboardingPage = () => {
         termsAccepted: false,
         notificationHour: -1,
     });
-
+   const t = useTheme();
+    const styles = makeStyles(t);
     // Get user store state and actions
     const { newUser, setNewUser, authLoading } = useUserStore();
 
@@ -104,8 +107,10 @@ const OnboardingPage = () => {
 
     return (
         <View style={styles.container}>
+            <AutoImageCarousel />
+            {renderCurrentStage()}
+
             {/* Progress bar */}
-            <View style={styles.progressContainer}>
                 <View style={styles.progressBar}>
                     {[1, 2, 3].map((stage) => (
                         <View
@@ -117,49 +122,43 @@ const OnboardingPage = () => {
                         />
                     ))}
                 </View>
-                <HeyDayText style={styles.progressText}>
-                    Step {currentStage} of 3
-                </HeyDayText>
-            </View>
-
-            {renderCurrentStage()}
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#fff" },
-    loadingContainer: {
+const makeStyles = (t) =>
+    StyleSheet.create({
+    container: { flex: 1,
+         backgroundColor: t.colors.background,
+         },
+          loadingContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: t.colors.background,
     },
     loadingText: {
         marginTop: 10,
-        fontSize: 16,
-        color: "#666",
-    },
-    progressContainer: {
-        paddingTop: 60,
-        paddingHorizontal: 20,
-        paddingBottom: 20,
-        alignItems: "center",
+        fontSize: t.fontSize.base,
+        color: t.colors.textPrimary,
     },
     progressBar: {
         flexDirection: "row",
         alignItems: "center",
+        width: "100%",
+        justifyContent: "center",
         marginBottom: 10,
     },
     progressDot: {
         width: 12,
         height: 12,
         borderRadius: 6,
-        backgroundColor: "#ddd",
+        backgroundColor: t.colors.border,
         marginHorizontal: 4,
     },
-    progressDotActive: { backgroundColor: "#007AFF" },
-    progressText: { fontSize: 14, color: "#666" },
+    progressDotActive: { backgroundColor: t.colors.primary },
+    progressText: { fontSize: t.fontSize.sm, 
+        color: t.colors.textSecondary },
 });
 
 export default OnboardingPage;

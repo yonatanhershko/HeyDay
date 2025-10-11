@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import HeyDayText from "../general/low_level/Text/HeyDayText";
+import { useTheme } from "../../styles/theme";
 
 interface OnboardingStageTwoProps {
     onNext: (accepted: boolean) => void;
@@ -10,7 +11,8 @@ interface OnboardingStageTwoProps {
 
 const OnboardingStageTwo: React.FC<OnboardingStageTwoProps> = ({ onNext, onBack, initialAccepted = false }) => {
     const [accepted, setAccepted] = useState(initialAccepted);
-
+    const t = useTheme();
+    const styles = makeStyles(t);
     const handleNext = () => {
         onNext(accepted);
     };
@@ -42,7 +44,7 @@ const OnboardingStageTwo: React.FC<OnboardingStageTwoProps> = ({ onNext, onBack,
                 onPress={() => setAccepted(!accepted)}
             >
                 <HeyDayText style={[styles.checkboxText, accepted && styles.checkboxTextChecked]}>
-                    {accepted ? '✓' : ''} I agree to the Terms & Conditions
+                    {accepted ? '' : ''} I agree to the Terms & Conditions
                 </HeyDayText>
             </TouchableOpacity>
 
@@ -63,48 +65,49 @@ const OnboardingStageTwo: React.FC<OnboardingStageTwoProps> = ({ onNext, onBack,
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
+const makeStyles = (t) =>
+    StyleSheet.create({
+        container: {
         flex: 1,
         padding: 20,
     },
     title: {
-        fontSize: 28,
-        fontWeight: 'bold',
+        fontSize: t.fontSize.xl,
+        fontFamily: t.fontFamily.rubikSemiBold,
         textAlign: 'center',
         marginBottom: 20,
     },
     termsContainer: {
         flex: 1,
-        backgroundColor: '#f8f8f8',
+        backgroundColor: t.colors.greyExstraLight,
         borderRadius: 10,
         padding: 15,
         marginBottom: 20,
         maxHeight: 300,
     },
     termsText: {
-        fontSize: 14,
+        fontSize: t.fontSize.sm,
         lineHeight: 20,
     },
     checkbox: {
         borderWidth: 2,
-        borderColor: '#ddd',
+        borderColor: t.colors.border,
         borderRadius: 10,
         padding: 15,
         marginBottom: 20,
-        backgroundColor: '#fff',
+        backgroundColor: t.colors.background,
     },
     checkboxChecked: {
-        borderColor: '#007AFF',
-        backgroundColor: '#f0f8ff',
+        borderColor: t.colors.primary,
+        backgroundColor: t.colors.background,
     },
     checkboxText: {
-        fontSize: 16,
+        fontSize: t.fontSize.base,
         textAlign: 'center',
     },
     checkboxTextChecked: {
-        color: '#007AFF',
-        fontWeight: 'bold',
+        color: t.colors.primary,
+        fontFamily: t.fontFamily.rubikRegular,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -112,29 +115,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     backButton: {
-        backgroundColor: '#f0f0f0',
         paddingHorizontal: 30,
         paddingVertical: 15,
         borderRadius: 10,
     },
     backButtonText: {
-        color: '#666',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: t.colors.textMuted,
+        fontSize: t.fontSize.base,
+        fontFamily: t.fontFamily.rubikMedium,
     },
     button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: t.colors.primary,
         paddingHorizontal: 40,
         paddingVertical: 15,
         borderRadius: 10,
     },
     buttonDisabled: {
-        backgroundColor: '#ccc',
+        backgroundColor: t.colors.disabled,
     },
     buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: t.colors.textLight,
+        fontSize: t.fontSize.base,
+        fontFamily: t.fontFamily.rubikMedium,
     },
 });
 
