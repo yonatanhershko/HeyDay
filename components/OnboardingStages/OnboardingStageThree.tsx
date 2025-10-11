@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import HeyDayText from "../general/low_level/Text/HeyDayText";
+import { useTheme } from "../../styles/theme";
 
 interface OnboardingStageThreeProps {
     onComplete: (notificationHour: number) => void;
@@ -10,7 +11,8 @@ interface OnboardingStageThreeProps {
 
 const OnboardingStageThree: React.FC<OnboardingStageThreeProps> = ({ onComplete, onBack, userName }) => {
     const [selectedHour, setSelectedHour] = useState<number | null>(null);
-
+    const t = useTheme();
+    const styles = makeStyles(t);
     const handleHourSelect = (hour: number) => {
         setSelectedHour(hour);
         console.log(`Selected notification hour: ${hour}:00`);
@@ -78,19 +80,20 @@ const OnboardingStageThree: React.FC<OnboardingStageThreeProps> = ({ onComplete,
     );
 };
 
-const styles = StyleSheet.create({
+const makeStyles = (t) =>
+    StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
     },
     title: {
-        fontSize: 28,
-        fontWeight: 'bold',
+        fontSize: t.fontSize.xl,
+        fontFamily: t.fontFamily.rubikSemiBold,
         textAlign: 'center',
         marginBottom: 10,
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: t.fontSize.base,
         textAlign: 'center',
         marginBottom: 30,
         opacity: 0.7,
@@ -104,24 +107,24 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     hourButton: {
-        backgroundColor: '#f0f0f0',
-        paddingHorizontal: 20,
+        backgroundColor: t.colors.greyExstraLight,
+        paddingHorizontal: 18,
         paddingVertical: 15,
         borderRadius: 10,
         margin: 5,
         minWidth: 80,
     },
     hourButtonSelected: {
-        backgroundColor: '#007AFF',
+        backgroundColor: t.colors.primary,
     },
     hourText: {
-        fontSize: 16,
+        fontSize: t.fontSize.base,
         textAlign: 'center',
-        color: '#333',
+        color: t.colors.textPrimary,
     },
     hourTextSelected: {
-        color: '#fff',
-        fontWeight: 'bold',
+        color: t.colors.white,
+        fontFamily: t.fontFamily.rubikMedium,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -129,15 +132,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     backButton: {
-        backgroundColor: '#f0f0f0',
         paddingHorizontal: 25,
         paddingVertical: 15,
         borderRadius: 10,
     },
     backButtonText: {
-        color: '#666',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: t.colors.textMuted,
+        fontSize: t.fontSize.base,
+        fontFamily: t.fontFamily.rubikMedium,
     },
     skipButton: {
         backgroundColor: 'transparent',
@@ -146,22 +148,23 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     skipButtonText: {
-        color: '#666',
-        fontSize: 16,
+        color: t.colors.textMuted,
+        fontSize: t.fontSize.sm,
+        fontFamily: t.fontFamily.rubikMedium,
     },
     button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: t.colors.primary,
         paddingHorizontal: 30,
         paddingVertical: 15,
         borderRadius: 10,
     },
     buttonDisabled: {
-        backgroundColor: '#ccc',
+        backgroundColor: t.colors.greyLine,
     },
     buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: t.colors.textLight,
+        fontSize: t.fontSize.base,
+        fontFamily: t.fontFamily.rubikMedium,
     },
 });
 

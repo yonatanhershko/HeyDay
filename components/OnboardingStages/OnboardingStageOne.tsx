@@ -9,6 +9,7 @@ import {
     ScrollView 
 } from "react-native";
 import HeyDayText from "../general/low_level/Text/HeyDayText";
+import { useTheme } from "../../styles/theme";
 
 interface OnboardingStageOneProps {
     onNext: (name: string) => void;
@@ -17,6 +18,8 @@ interface OnboardingStageOneProps {
 
 const OnboardingStageOne: React.FC<OnboardingStageOneProps> = ({ onNext, initialName = "" }) => {
     const [name, setName] = useState(initialName);
+    const t = useTheme();
+    const styles = makeStyles(t);
 
     const handleNext = () => {
         if (name.trim()) {
@@ -65,7 +68,8 @@ const OnboardingStageOne: React.FC<OnboardingStageOneProps> = ({ onNext, initial
     );
 };
 
-const styles = StyleSheet.create({
+const makeStyles = (t) =>
+    StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         padding: 20,
@@ -73,13 +77,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 28,
-        fontWeight: 'bold',
+        fontSize: t.fontSize.xl,
+        fontFamily: t.fontFamily.rubikSemiBold,
         textAlign: 'center',
         marginBottom: 10,
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: t.fontSize.base,
         textAlign: 'center',
         marginBottom: 40,
         opacity: 0.7,
@@ -89,33 +93,33 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
     label: {
-        fontSize: 18,
+        fontSize: t.fontSize.md,
         marginBottom: 10,
         textAlign: 'center',
     },
     input: {
         borderWidth: 2,
-        borderColor: '#ddd',
+        borderColor: t.colors.border,
         borderRadius: 10,
         padding: 15,
-        fontSize: 16,
+        fontSize: t.fontSize.base,
         textAlign: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: t.colors.background,
     },
     button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: t.colors.primary,
         paddingHorizontal: 40,
         paddingVertical: 15,
         borderRadius: 10,
         minWidth: 120,
     },
     buttonDisabled: {
-        backgroundColor: '#ccc',
+        backgroundColor: t.colors.disabled,
     },
     buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: t.colors.textLight,
+        fontSize: t.fontSize.base,
+        fontFamily: t.fontFamily.rubikMedium,
         textAlign: 'center',
     },
 });
