@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-unused-styles */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     StyleSheet,
     View,
@@ -7,6 +7,10 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
+    Modal,
+    Animated,
+    Dimensions,
+    Image,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -16,6 +20,7 @@ import { useMoodStore } from "../../contexts/store/MoodStore.js";
 import { useStreakStore } from "../../contexts/store/StreakStore.js";
 import HeyDayText from "../../components/general/low_level/Text/HeyDayText.js";
 import MoodOption from "../../components/general/low_level/MoodOption.js";
+import HeyDayIcon from "../../components/general/low_level/HeyDayIcon.js";
 import i18n, { isRTL } from "../../i18n.config.js";
 import {
     OkeyMoodOne,
@@ -34,6 +39,8 @@ const MOOD_OPTIONS = [
     { id: "5", label: "Amazing", emoji: AmazingMoodOne },
 ];
 
+const { height } = Dimensions.get("window");
+
 export default function MoodCheckerPage() {
     const router = useRouter();
     const t = useTheme();
@@ -49,7 +56,11 @@ export default function MoodCheckerPage() {
         submitMoodEntry,
         resetForm,
     } = useMoodStore();
-    const { loadStreak, logMood } = useStreakStore();
+    const { streakCount, loadStreak, logMood } = useStreakStore();
+
+    // Modal state and animation
+    const [showStreakModal, setShowStreakModal] = useState(false);
+    const slideAnim = useRef(new Animated.Value(height)).current;
 
     // Load user streak data when component mounts
     useEffect(() => {
@@ -58,6 +69,30 @@ export default function MoodCheckerPage() {
             loadStreak(userInfo.userId);
         }
     }, [userInfo?.userId, loadStreak]);
+
+    // Handle modal animations
+    useEffect(() => {
+        if (showStreakModal) {
+            Animated.spring(slideAnim, {
+                toValue: 0,
+                useNativeDriver: true,
+                tension: 50,
+                friction: 8,
+            }).start();
+        }
+    }, [showStreakModal]);
+
+    const closeModal = () => {
+        Animated.timing(slideAnim, {
+            toValue: height,
+            duration: 300,
+            useNativeDriver: true,
+        }).start(() => {
+            setShowStreakModal(false);
+            resetForm();
+            router.push("/home");
+        });
+    };
 
     const handleMoodSelect = (moodId) => {
         setSelectedMood(moodId);
@@ -87,18 +122,17 @@ export default function MoodCheckerPage() {
             // Save mood entry
             await submitMoodEntry(userInfo.userId);
 
-            // Update streak and coins after successful mood entry
             await logMood(userInfo.userId);
+            await loadStreak(userInfo.userId);
+            const currentStreak = useStreakStore.getState().streakCount;
 
-            Alert.alert("Success!", "Your mood has been saved.", [
-                { 
-                    text: "OK", 
-                    onPress: () => {
-                        resetForm();
-                        router.push("/home");
-                    }
-                },
-            ]);
+            // Show streak modal only if user has a streak (streak > 0) change it for test
+            if (currentStreak > -1) {
+                setShowStreakModal(true);
+            } else {
+                resetForm();
+                router.push("/home");
+            }
         } catch (error) {
             Alert.alert("Error", "Failed to save mood. Please try again.");
         }
@@ -180,6 +214,106 @@ export default function MoodCheckerPage() {
                     </TouchableOpacity>
                 </ScrollView>
             </View>
+
+            {/* Streak Modal */}
+            <Modal
+                visible={showStreakModal}
+                transparent={true}
+                animationType="none"
+                onRequestClose={closeModal}
+            >
+                <View style={styles.modalOverlay}>
+                    <Animated.View
+                        style={[
+                            styles.modalContent,
+                            {
+                                transform: [{ translateY: slideAnim }],
+                            },
+                        ]}
+                    >
+                        {/* Bunny Image */}
+                        <View style={styles.bunnyContainer}>
+                            <Image
+                                source={require("../../assets/images/MoodIcons/AmazingMoodOne.png")}
+                                style={styles.bunnyImage}
+                                resizeMode="contain"
+                            />
+                        </View>
+
+                        {/* Congratulations Text */}
+                        <HeyDayText style={styles.modalTitle}>
+                            Amazing Streak!
+                        </HeyDayText>
+
+                        {/* Fire Icons Row */}
+                        <View style={styles.fireIconsContainer}>
+                            {Array.from({
+                                length: Math.min(streakCount, 7),
+                            }).map((_, index) => {
+                                const isLastYellowFire =
+                                    index === Math.min(streakCount, 7) - 1;
+
+                                if (isLastYellowFire) {
+                                    return (
+                                        <View
+                                            key={index}
+                                            style={styles.fireIconWrapper}
+                                        >
+                                            <Image
+                                                source={require("../../assets/gifs/StreakLoop.gif")}
+                                                style={styles.streakGif}
+                                                resizeMode="contain"
+                                            />
+                                            <HeyDayIcon
+                                                name="fire"
+                                                size={32}
+                                                color="#FFC300"
+                                            />
+                                        </View>
+                                    );
+                                }
+
+                                return (
+                                    <HeyDayIcon
+                                        key={index}
+                                        name="fire"
+                                        size={32}
+                                        color="#FFC300"
+                                    />
+                                );
+                            })}
+                            {/* Show gray fires for remaining days up to 7 */}
+                            {streakCount < 7 &&
+                                Array.from({ length: 7 - streakCount }).map(
+                                    (_, index) => (
+                                        <HeyDayIcon
+                                            key={`gray-${index}`}
+                                            name="fire"
+                                            size={32}
+                                            color="#AAAAAA"
+                                        />
+                                    )
+                                )}
+                        </View>
+
+                        {/* Streak Number */}
+                        <HeyDayText style={styles.streakNumber}>
+                            {streakCount} Day{streakCount !== 1 ? "s" : ""}{" "}
+                            Streak!
+                        </HeyDayText>
+
+                        {/* Continue Button */}
+                        <TouchableOpacity
+                            style={styles.continueButton}
+                            onPress={closeModal}
+                        >
+                            <HeyDayText style={styles.continueButtonText}>
+                                Continue
+                            </HeyDayText>
+                        </TouchableOpacity>
+                    </Animated.View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -255,5 +389,79 @@ const makeStyles = (t) =>
             color: t.colors.textPrimary,
             fontSize: t.fontSize.base,
             fontFamily: t.fontFamily.rubikMedium,
+        },
+        // Modal styles
+        modalOverlay: {
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            justifyContent: "flex-end",
+        },
+        modalContent: {
+            backgroundColor: "#D1F0E1",
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            paddingHorizontal: 30,
+            paddingTop: 40,
+            paddingBottom: 40,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: -2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+        },
+        bunnyImage: {
+            width: 120,
+            height: 120,
+        },
+        bunnyContainer: {
+            backgroundColor: "#A6D9D9",
+            padding: 12,
+            borderRadius: 100,
+        },
+        modalTitle: {
+            fontSize: 24,
+            fontWeight: "700",
+            color: "#333",
+            marginVertical: 12,
+            textAlign: "center",
+        },
+        fireIconsContainer: {
+            flexDirection: "row-reverse",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            gap: 8,
+            marginBottom: 20,
+            flexWrap: "wrap",
+        },
+        fireIconWrapper: {
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        streakGif: {
+            width: 40,
+            height: 40,
+        },
+        streakNumber: {
+            fontSize: 20,
+            fontWeight: "600",
+            color: "#FFC300",
+            marginBottom: 30,
+            textAlign: "center",
+        },
+        continueButton: {
+            backgroundColor: t.colors.primary,
+            borderRadius: 12,
+            paddingVertical: 16,
+            paddingHorizontal: 60,
+            alignItems: "center",
+        },
+        continueButtonText: {
+            color: t.colors.textPrimary,
+            fontSize: t.fontSize.base,
+            fontWeight: "600",
         },
     });

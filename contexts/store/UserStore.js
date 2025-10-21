@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import FirebaseService from '../../api/services/FirebaseService';
-import { setOnboardingDone, hasFinishedOnboarding } from '../../api/services/AsyncStorageService';
+import { setOnboardingDone, hasFinishedOnboarding, getThemePreference, setThemePreference } from '../../api/services/AsyncStorageService';
 
 // Zustand store for user/session and UI preferences
 
@@ -16,15 +16,18 @@ export const useUserStore = create((set, get) => ({
 
   // Preferences
   language: 'he', // default, will be overridden by i18n on load
-  darkTheme: null, // nullable boolean: null = follow system
+  darkTheme: null, // nullable boolean: null = follow system, true = dark, false = light
   authorizedLessons: {},
 
-  // Getters (used in components)
-  // getDarkTheme: () => get().darkTheme,
+  // Getters
+  getDarkTheme: () => get().darkTheme,
 
   // Setters
   setLanguage: (language) => set({ language }),
-  // setDarkTheme: (isDark) => set({ darkTheme: isDark }),
+  setDarkTheme: async (isDark) => {
+    set({ darkTheme: isDark });
+    await setThemePreference(isDark);
+  },
   setLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
   setUserInfo: (userInfo) => set({ userInfo }),
   setUser: (User) => set({ User }),
@@ -76,6 +79,17 @@ export const useUserStore = create((set, get) => ({
       set({ onboardingCompleted: hasCompleted });
     } catch (error) {
       console.error('Error initializing onboarding state:', error);
+    }
+  },
+  
+  // Initialize theme preference from AsyncStorage
+  initializeThemePreference: async () => {
+    try {
+      const themePreference = await getThemePreference();
+      set({ darkTheme: themePreference });
+      console.log('Theme preference loaded:', themePreference);
+    } catch (error) {
+      console.error('Error initializing theme preference:', error);
     }
   },
   

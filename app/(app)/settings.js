@@ -26,11 +26,16 @@ export default function Settings() {
     const searchParams = useLocalSearchParams();
     const t = useTheme();
     const styles = makeStyles(t);
-    const { language, isLoggedIn, setLanguage, setLoggedIn } = useUserStore();
+    const { language, isLoggedIn, darkTheme, setLanguage, setLoggedIn, setDarkTheme, initializeThemePreference } = useUserStore();
 
     // Add local state only for what's not in Zustand yet
     const [isEditing, setIsEditing] = React.useState(false);
     const [name, setName] = React.useState("User Name"); // Default value
+
+    // Initialize theme preference on mount
+    React.useEffect(() => {
+        initializeThemePreference();
+    }, []);
 
     // Handle navigation back
     const handleGoBack = () => {
@@ -64,10 +69,10 @@ export default function Settings() {
         }
     };
 
-    // Handle theme toggle using Zustand
-    // const handleThemeChange = (value) => {
-    //   setDarkTheme(value);
-    // };
+    // Handle theme change
+    const handleThemeChange = async (isDark) => {
+        await setDarkTheme(isDark);
+    };
 
     // Handle save profile
     const handleSaveProfile = () => {
@@ -148,6 +153,78 @@ export default function Settings() {
                                 ]}
                             >
                                 עברית
+                            </HeyDayText>
+                        </Pressable>
+                    </View>
+                </View>
+
+                {/* Theme Section */}
+                <View style={styles.section}>
+                    <HeyDayText style={styles.sectionTitle}>
+                        Theme
+                    </HeyDayText>
+                    <View style={styles.themeOptions}>
+                        <Pressable
+                            style={[
+                                styles.themeOption,
+                                darkTheme === false && styles.selectedTheme,
+                            ]}
+                            onPress={() => handleThemeChange(false)}
+                        >
+                            <MaterialIcons
+                                name="light-mode"
+                                size={24}
+                                color={darkTheme === false ? "#5852F2" : "white"}
+                            />
+                            <HeyDayText
+                                style={[
+                                    styles.themeText,
+                                    darkTheme === false && styles.selectedThemeText,
+                                ]}
+                            >
+                                Light
+                            </HeyDayText>
+                        </Pressable>
+                        <Pressable
+                            style={[
+                                styles.themeOption,
+                                darkTheme === true && styles.selectedTheme,
+                            ]}
+                            onPress={() => handleThemeChange(true)}
+                        >
+                            <MaterialIcons
+                                name="dark-mode"
+                                size={24}
+                                color={darkTheme === true ? "#5852F2" : "white"}
+                            />
+                            <HeyDayText
+                                style={[
+                                    styles.themeText,
+                                    darkTheme === true && styles.selectedThemeText,
+                                ]}
+                            >
+                                Dark
+                            </HeyDayText>
+                        </Pressable>
+                        <Pressable
+                            style={[
+                                styles.themeOption,
+                                darkTheme === null && styles.selectedTheme,
+                            ]}
+                            onPress={() => handleThemeChange(null)}
+                        >
+                            <MaterialIcons
+                                name="brightness-auto"
+                                size={24}
+                                color={darkTheme === null ? "#5852F2" : "white"}
+                            />
+                            <HeyDayText
+                                style={[
+                                    styles.themeText,
+                                    darkTheme === null && styles.selectedThemeText,
+                                ]}
+                            >
+                                System
                             </HeyDayText>
                         </Pressable>
                     </View>
@@ -303,6 +380,32 @@ const makeStyles = (t) =>
             fontFamily: t.fontFamily.rubikRegular,
         },
         selectedLanguageText: {
+            color: "#5852F2",
+        },
+        themeOptions: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            gap: 10,
+        },
+        themeOption: {
+            flex: 1,
+            alignItems: "center",
+            paddingVertical: 12,
+            paddingHorizontal: 10,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: "white",
+            gap: 8,
+        },
+        selectedTheme: {
+            backgroundColor: "white",
+        },
+        themeText: {
+            color: "white",
+            fontSize: 14,
+            fontFamily: t.fontFamily.rubikRegular,
+        },
+        selectedThemeText: {
             color: "#5852F2",
         },
         settingRow: {
