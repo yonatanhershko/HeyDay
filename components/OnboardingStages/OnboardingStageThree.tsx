@@ -91,12 +91,14 @@ const makeStyles = (t) =>
         fontFamily: t.fontFamily.rubikSemiBold,
         textAlign: 'center',
         marginBottom: 10,
+        color: t.colors.textPrimary,
     },
     subtitle: {
         fontSize: t.fontSize.base,
         textAlign: 'center',
         marginBottom: 30,
         opacity: 0.7,
+        color: t.colors.textPrimary,
     },
     hoursContainer: {
         flex: 1,
@@ -140,6 +142,7 @@ const makeStyles = (t) =>
         color: t.colors.textMuted,
         fontSize: t.fontSize.base,
         fontFamily: t.fontFamily.rubikMedium,
+        
     },
     skipButton: {
         backgroundColor: 'transparent',

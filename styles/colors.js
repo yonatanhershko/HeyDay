@@ -1,15 +1,15 @@
 export const ColorsLight = {
-  primary: '#A6D9D9', // Main brand color (buttons, headers)
+  primary: '#7fc9e4ff', // Main brand color (buttons, headers)
   primaryAlt: '#03FF84', // Alternate highlight color or CTA
   secondary: '#D1F0E1', // Used for dark backgrounds (e.g., navbar)
-  secondaryAlt: '#EDE2F9', // Lighter background sections or containers
+  secondaryAlt: '#242424', // Lighter background sections or containers
   tertiary: '#5852F2',
   background: '#FFFFFF', // App/page background
   backgroundSecondary: '#5852f2', // Section or card background
   backgroundAlt: '#ededed', // Section or card background
   tertiaryBackground: '#746FF4',
   surface: '#FFFFFF', // Surface like card/container
-  onPrimary: '#242424', // Text on primary button or primary bg
+  onPrimary: '#D1F0E1', // Text on primary button or primary bg
   onSecondary: '#363636', // Text on secondary background
 
 

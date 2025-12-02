@@ -37,12 +37,6 @@ export default function HeydayIndex() {
   if (authLoading) {
     return (
       <SafeAreaView style={styles.container}>
-        <LinearGradient
-        colors={['#F8FAFC', '#F8FAFC']}
-        start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="white" />
           <HeyDayText style={styles.loadingText}>Loading...</HeyDayText>
@@ -69,13 +63,6 @@ export default function HeydayIndex() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        // colors={['#ffff', '#5852F2']}
-        colors={['#F8FAFC', '#F8FAFC']}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
       <View style={styles.goBackContainer}>
         <TouchableOpacity onPress={() => router.push('/settings')}>
           <MaterialIcons name="settings" size={24} color="white" />
@@ -92,7 +79,7 @@ export default function HeydayIndex() {
 const makeStyles = t =>
   StyleSheet.create({
     container: {
-      backgroundColor: 'transparent',
+      backgroundColor: t.colors.background,
       flex: 1,
     },
     loadingContainer: {

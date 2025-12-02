@@ -76,6 +76,7 @@ const makeStyles = (t) =>
         fontFamily: t.fontFamily.rubikSemiBold,
         textAlign: 'center',
         marginBottom: 20,
+        color: t.colors.textPrimary,
     },
     termsContainer: {
         flex: 1,
@@ -84,10 +85,12 @@ const makeStyles = (t) =>
         padding: 15,
         marginBottom: 20,
         maxHeight: 300,
+        color: t.colors.textPrimary,
     },
     termsText: {
         fontSize: t.fontSize.sm,
         lineHeight: 20,
+        color: t.colors.textPrimary,
     },
     checkbox: {
         borderWidth: 2,
@@ -96,6 +99,7 @@ const makeStyles = (t) =>
         padding: 15,
         marginBottom: 20,
         backgroundColor: t.colors.background,
+        color: t.colors.textPrimary,
     },
     checkboxChecked: {
         borderColor: t.colors.primary,
@@ -104,6 +108,7 @@ const makeStyles = (t) =>
     checkboxText: {
         fontSize: t.fontSize.base,
         textAlign: 'center',
+        color: t.colors.textPrimary,
     },
     checkboxTextChecked: {
         color: t.colors.primary,

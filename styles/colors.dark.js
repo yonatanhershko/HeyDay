@@ -4,7 +4,7 @@ export const ColorsDark = {
   secondary: '#121212', // Background
   secondaryAlt: '#1F1B24', // Surface
 
-  background: '#121212', // App bg
+  background: '#2e2e2eff', // App bg
   backgroundAlt: '#2C2C2C', // Card/container bg
 
   surface: '#1F1B24', // For surfaces (cards, modals)
@@ -33,11 +33,13 @@ export const ColorsDark = {
   greyDark: '#A1A1A1', // Used in icons or alt text
   greyLine: '#333', // Lines and borders
   greyTextAlt: '#999999', // Alternative text-muted
+  greyExstraLight: '#3f3c3fff', // Alternative text-muted
 
   highlightPurple: '#9C72B2', // Accent
   lightPurple: '#C9A7F1', // Background or decorations
   mainPurple: '#BB86FC', // Same as `primary` (⚠️ semantic duplicate)
-  accentPurple: '#2A1A3D', // Surface alt
+  accentPurple: '#2A1A3D', // Surface alt 
+  blueGrey: '#3f3c3fff',
 
   accentGreen: '#9DECB7', // Decorative green
   tagGreen: '#A3D9A5', // Tag bg

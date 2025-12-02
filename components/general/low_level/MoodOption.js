@@ -12,10 +12,10 @@ const MoodOption = ({ img, label, onPress, isSelected }) => {
     const triggerShake = () => {
         shakeAnimation.setValue(0);
         rotateAnimation.setValue(0);
-        
+
         Animated.parallel([
             // Shake animation
-          
+
             // Rotation animation
             Animated.sequence([
                 Animated.timing(rotateAnimation, {
@@ -44,7 +44,7 @@ const MoodOption = ({ img, label, onPress, isSelected }) => {
 
     const rotateInterpolate = rotateAnimation.interpolate({
         inputRange: [-1, 1],
-        outputRange: ['-2deg', '2deg'],
+        outputRange: ["-2deg", "2deg"],
     });
 
     return (
@@ -52,19 +52,27 @@ const MoodOption = ({ img, label, onPress, isSelected }) => {
             style={{
                 transform: [
                     { translateX: shakeAnimation },
-                    { rotate: rotateInterpolate }
+                    { rotate: rotateInterpolate },
                 ],
             }}
         >
             <Pressable
                 onPress={handlePress}
                 style={({ pressed }) => [
-                  styles.container, isSelected && styles.selected,
-                  pressed && { transform: [{ translateY: 2 }] },
+                    styles.container,
+                    isSelected && styles.selected,
+                    pressed && { transform: [{ translateY: 2 }] },
                 ]}
             >
                 <Image style={styles.imageContainer} source={img} />
-                <HeyDayText style={styles.label}>{label}</HeyDayText>
+                <HeyDayText
+                    style={[
+                        styles.label,
+                        isSelected && styles.selected,
+                    ]}
+                >
+                    {label}
+                </HeyDayText>
             </Pressable>
         </Animated.View>
     );
@@ -86,7 +94,8 @@ const makeStyles = (t) =>
         },
         selected: {
             borderColor: t.colors.textPrimary,
-            backgroundColor: t.colors.secondary,
+            backgroundColor: t.colors.onPrimary,
+            color: t.colors.secondaryAlt,
         },
         imageContainer: {
             width: 70,

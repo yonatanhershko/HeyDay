@@ -343,7 +343,7 @@ const makeStyles = (t) =>
         title: {
             fontSize: 20,
             fontWeight: "600",
-            color: "#333",
+            color: t.colors.textPrimary,
         },
         content: {
             flex: 1,
@@ -367,13 +367,14 @@ const makeStyles = (t) =>
             marginBottom: 20,
         },
         textInput: {
-            borderColor: "#D6E0E0",
+            borderColor: t.colors.border,
             borderWidth: 1,
             borderRadius: 12,
             padding: 16,
             fontSize: t.fontSize.base,
             minHeight: 60,
-            backgroundColor: "#FAFAFA",
+            backgroundColor: t.colors.background,
+            color: t.colors.textPrimary,
         },
         saveButton: {
             backgroundColor: t.colors.primary,
@@ -383,7 +384,7 @@ const makeStyles = (t) =>
             marginBottom: 20,
         },
         saveButtonDisabled: {
-            backgroundColor: "#CCCCCC",
+            backgroundColor: t.colors.disabled,
         },
         saveButtonText: {
             color: t.colors.textPrimary,

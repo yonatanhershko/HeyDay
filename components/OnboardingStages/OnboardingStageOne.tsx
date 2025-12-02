@@ -77,12 +77,14 @@ const makeStyles = (t) =>
         alignItems: 'center',
     },
     title: {
+        color: t.colors.textPrimary,
         fontSize: t.fontSize.xl,
         fontFamily: t.fontFamily.rubikSemiBold,
         textAlign: 'center',
         marginBottom: 10,
     },
     subtitle: {
+        color: t.colors.textPrimary,
         fontSize: t.fontSize.base,
         textAlign: 'center',
         marginBottom: 40,
@@ -93,6 +95,7 @@ const makeStyles = (t) =>
         marginBottom: 40,
     },
     label: {
+        color: t.colors.textPrimary,
         fontSize: t.fontSize.md,
         marginBottom: 10,
         textAlign: 'center',
@@ -105,6 +108,7 @@ const makeStyles = (t) =>
         fontSize: t.fontSize.base,
         textAlign: 'center',
         backgroundColor: t.colors.background,
+        color: t.colors.textPrimary,
     },
     button: {
         backgroundColor: t.colors.primary,
